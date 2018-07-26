@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
+     
+     <!-- dbcp db 연결 -->
+    <bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
+        <property name="url" value="jdbc:mariadb://localhost:3307/Study"/>
+        <property name="username" value="Study"/>
+        <property name="password" value="Study"/>
+    </bean>
+
+	<!-- 쿼리 로그 -->
+	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource"> 
+		<constructor-arg ref="dataSourceSpied" /> 
+		<property name="logFormatter"> 
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter"> 
+				<property name="loggingType" value="MULTI_LINE" /> 
+				<property name="sqlPrefix" value="SQL : "/> 
+			</bean> 
+		</property> 
+	</bean>
+
+</beans>
