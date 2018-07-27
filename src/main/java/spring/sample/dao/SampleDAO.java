@@ -6,10 +6,10 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import spring.common.common.CommandMap;
-import spring.common.dao.AbstractDAO;
+import spring.common.dao.AbstractDao;
 
-@Repository("sampleDAO")
-public class SampleDAO extends AbstractDAO {
+@Repository
+public class SampleDao extends AbstractDao {
 
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectBoardList(CommandMap map) throws Exception {
@@ -17,7 +17,7 @@ public class SampleDAO extends AbstractDAO {
 
 	}
 
-	public void insertBoard(Map<String, Object> map) throws Exception{
+	public void insertBoard(Map<String, Object> map) throws Exception {
 		insert("sample.insertBoard", map);
 	}
 
@@ -30,12 +30,29 @@ public class SampleDAO extends AbstractDAO {
 		return (Map<String, Object>) selectOne("sample.selectBoardDetail", map);
 	}
 
-	public void updateBoard(Map<String, Object> map) throws Exception{
+	public void updateBoard(Map<String, Object> map) throws Exception {
 		update("sample.updateBoard", map);
 	}
 
 	public void deleteBoard(Map<String, Object> map) {
 		update("sample.deleteBoard", map);
+	}
+
+	public void insertFile(Map<String, Object> map) {
+		insert("sample.insertFile", map);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> selectFileList(Map<String, Object> map) throws Exception {
+		return (List<Map<String, Object>>) selectList("sample.selectFileList", map);
+	}
+
+	public void deleteFileList(Map<String, Object> map) throws Exception {
+		update("sample.deleteFileList", map);
+	}
+
+	public void updateFile(Map<String, Object> map) throws Exception {
+		update("sample.updateFile", map);
 	}
 
 }

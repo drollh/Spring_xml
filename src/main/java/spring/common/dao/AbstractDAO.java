@@ -1,14 +1,16 @@
 package spring.common.dao;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class AbstractDAO {
-    protected Logger log = LoggerFactory.getLogger(AbstractDAO.class);
+public class AbstractDao {
+    protected Logger log = LoggerFactory.getLogger(AbstractDao.class);
      
     @Autowired
     private SqlSessionTemplate sqlSession;
@@ -54,5 +56,27 @@ public class AbstractDAO {
     public List selectList(String queryId, Object params){
         printQueryId(queryId);
         return sqlSession.selectList(queryId,params);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Object selectPagingList(String queryId, Object params){
+        printQueryId(queryId);
+        Map<String,Object> map = (Map<String,Object>)params;
+         
+        String strPageIndex = (String)map.get("PAGE_INDEX");
+        String strPageRow = (String)map.get("PAGE_ROW");
+        int nPageIndex = 0;
+        int nPageRow = 20;
+         
+        if("".equals(strPageIndex) == false){
+            nPageIndex = Integer.parseInt(strPageIndex)-1;
+        }
+        if("".equals(strPageRow) == false){
+            nPageRow = Integer.parseInt(strPageRow);
+        }
+        map.put("START", (nPageIndex * nPageRow) + 1);
+        map.put("END", (nPageIndex * nPageRow) + nPageRow);
+         
+        return sqlSession.selectList(queryId, map);
     }
 }
